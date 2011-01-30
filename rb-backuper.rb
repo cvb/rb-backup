@@ -51,7 +51,7 @@ end
 
 class ConfigParser
   # Do all usefull work in initialize
-  # parsing command line arguments
+  # parsing config file arguments
   attr_writer :config_name
   attr_reader :config
   
@@ -71,6 +71,7 @@ class ConfigParser
 end
 
 class Options
+  # Parsing command line args
   def initialize
     @opts = {}
     optparse = OptionParser.new do|opts|
