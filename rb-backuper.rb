@@ -19,15 +19,20 @@ require 'optparse'
 require 'pathname'
 
 class Backuper
+  # Parse command line options
   def parse_options
     opts = Options.new
     @config_file = opts.config_file
   end
+
+  # Load yml config
   def load_config
     parser = ConfigParser.new(@config_file)
     #parser.config_name=@config_file
     @conf = parser.config
   end
+  
+  # Load backup methods
   def load_methods
     pn = Pathname.new(File.expand_path(@config_file))
     method_dir = pn.dirname + "methods/"
@@ -35,6 +40,7 @@ class Backuper
       require f
     end
   end
+
   def run_backup
     parse_options
     load_config
@@ -44,22 +50,10 @@ class Backuper
 end
 
 class ConfigParser
+  # Do all usefull work in initialize
+  # parsing command line arguments
   def initialize(config_name)
     @config_name = config_name
-    @config = File.open(File.expand_path(@config_name)) do |io| 
-      YAML::load(io) 
-    end
-  end
-  def config_name=(name)
-    @config_name = name
-  end
-  def print_config
-    puts @config
-  end
-  def config
-    @config
-  end
-  def read
     @config = File.open(File.expand_path(@config_name)) do |io| 
       YAML::load(io) 
     end
@@ -67,6 +61,19 @@ class ConfigParser
     puts "Something bad happened when trying to read config:\n" + detail.message
     exit
   end
+  
+  def config_name=(name)
+    @config_name = name
+  end
+  
+  def print_config
+    puts @config
+  end
+  
+  def config
+    @config
+  end
+
 end
 
 class Options
