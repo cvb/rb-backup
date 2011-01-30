@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby1.9
-# Copyright 2010 Peter Goncharov
+# Copyright 2011 Peter Goncharov
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -20,6 +20,12 @@ require 'pathname'
 
 class Backuper
   # Parse command line options
+  def initialize
+    parse_options
+    load_config
+    load_methods
+  end
+  
   def parse_options
     opts = Options.new
     @config_file = opts.config_file
@@ -29,6 +35,7 @@ class Backuper
   def load_config
     parser = ConfigParser.new(@config_file)
     #parser.config_name=@config_file
+    #puts parser.config
     @conf = parser.config
   end
   
@@ -41,10 +48,22 @@ class Backuper
     end
   end
 
+  def have_undefined_methods?
+    undefined_methods = []
+    @conf.each_value do |name|
+      begin
+        self.method(name['method'])
+      rescue NameError => e
+        undefined_methods.push e.name
+        next
+      end
+    end
+    undefined_methods
+  end
+  
   def run_backup
-    parse_options
-    load_config
-    load_methods
+    und_meths = have_undefined_methods?
+    puts "undefined methods: #{und_meths}" if not und_meths.empty?
   end
 
 end
@@ -95,7 +114,7 @@ class Options
   end
   
   def config_file
-    puts @opts
+    #puts @opts
     @opts[:config_file]
   end
 end
