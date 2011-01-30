@@ -52,6 +52,9 @@ end
 class ConfigParser
   # Do all usefull work in initialize
   # parsing command line arguments
+  attr_writer :config_name
+  attr_reader :config
+  
   def initialize(config_name)
     @config_name = config_name
     @config = File.open(File.expand_path(@config_name)) do |io| 
@@ -61,19 +64,10 @@ class ConfigParser
     puts "Something bad happened when trying to read config:\n" + detail.message
     exit
   end
-  
-  def config_name=(name)
-    @config_name = name
-  end
-  
+
   def print_config
     puts @config
   end
-  
-  def config
-    @config
-  end
-
 end
 
 class Options
