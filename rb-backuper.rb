@@ -52,6 +52,7 @@ class Backuper
     undefined_methods = []
     @conf.each_value do |name|
       begin
+        puts name
         self.method(name['method'])
       rescue NameError => e
         undefined_methods.push e.name
@@ -63,9 +64,15 @@ class Backuper
   
   def run_backup
     und_meths = have_undefined_methods?
-    puts "undefined methods: #{und_meths}" if not und_meths.empty?
+    if not und_meths.empty?
+      puts "Undefined methods: #{und_meths}"
+      exit
+    else 
+      @conf.each_value do |name|
+        puts self.method(name['method']).call name
+      end
+    end
   end
-
 end
 
 class ConfigParser
