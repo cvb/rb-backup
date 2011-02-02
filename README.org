@@ -1,4 +1,4 @@
-* This script is just running backup methods read from config/methods dir.
+* This script is just running backup methods read from config_path/methods dir.
 
   Than output results to stdout when something go wrong or nothing.
 
@@ -8,3 +8,6 @@
 
    Parameters depend on method, some of them available at
    git://github.com/cvb/rb-backup-methods.git
+
+* Default path to config is ~/.rb-backuper
+  
