@@ -64,14 +64,17 @@ class Backuper
   
   def run_backup
     und_meths = have_undefined_methods?
+    bad_results = []            # Bad results of method execution will be here
     if not und_meths.empty?
       puts "Undefined methods: #{und_meths}"
       exit
     else 
       @conf.each_value do |name|
-        puts self.method(name['method']).call name
+        r = self.method(name['method']).call name
+        bad_results.push name['method'] + r if r
       end
     end
+    puts bad_results
   end
 end
 
