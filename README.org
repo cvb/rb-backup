@@ -1,0 +1,10 @@
+* This script is just running backup methods read from config/methods dir.
+
+  Than output results to stdout when something go wrong or nothing.
+
+* Config is just yml file, syntax:
+  name:
+   script-parameters
+
+   Parameters depend on method, some of them available at
+   git://github.com/cvb/rb-backup-methods.git
